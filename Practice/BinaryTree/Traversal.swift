@@ -27,19 +27,16 @@ class SolutionTraversal {
         guard root != nil else {
             return []
         }
-        
-        var result = [Int]()
+        var result: [Int] = [Int]()
         var stack: [TreeNode?] = [root]
         while !stack.isEmpty {
-            let node = stack.removeFirst()
-            if node != nil {
-                result.append(node!.val)
-            }else{
-                continue
+            if let node = stack.removeFirst() {
+                result.append(node.val)
+                stack.insert(node.right, at: 0)
+                stack.insert(node.left, at: 0)
             }
-            stack.insert(node?.right, at: 0)
-            stack.insert(node?.left, at: 0)
         }
+        
         return result
     }
     
@@ -49,9 +46,32 @@ class SolutionTraversal {
     }
     
     
+    //后序遍历，左右中
+    //左右中，可转化为 中右左，然后翻转
+    //如果直接
+    
+    /*
+     后序遍历，左右中
+     思路：左右中，可转化为 中右左，然后翻转
+     思考：这里不能直接套用前序遍历的方法，前序遍历的核心是栈有出线的过程，每次循环都会把 中节点 出栈，换成左右节点。
+     如果直接用这个思路来思考后序遍历，会发现，循环中没有出栈过程，必须把全部节点都加到一个数组中，按左右中排成正确的顺序才能一个个出栈。
+     
+     */
     func postorderTraversal(_ root: TreeNode?) -> [Int] {
-
-        return []
+        guard root != nil else {
+            return []
+        }
+        var results = [Int]()
+        var stack: [TreeNode?] = [root]
+        while !stack.isEmpty {
+            if let node = stack.removeFirst() {
+                results.append(node.val)
+                stack.insert(node.left, at: 0)
+                stack.insert(node.right, at: 0)
+            }
+        }
+        
+        return results.reversed()
     }
     
     
