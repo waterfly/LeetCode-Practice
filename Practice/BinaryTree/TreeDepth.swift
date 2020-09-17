@@ -10,7 +10,7 @@ import Foundation
 
 
 //104, 二叉树的最大深度/Maximum Depth of Binary Tree
-class SolutionBinary_TreeDepth_Max {
+class SolutionBinary_TreeDepthMax {
     
     //DFS 深度优先遍历，使用递归
     func dfsDepth(_ root: TreeNode?) -> Int {
@@ -93,33 +93,20 @@ class SolutionBinary_TreeDepth_Max {
     }
 }
 
-
 //111, 二叉树的最小深度/Minimum Depth of Binary Tree
-class SolutionBinaryTreeDepth_Min {
+class SolutionBinaryTreeDepthMin {
     
     //DFS，深度优先遍历，递归方法
     func bfsMinDepthRecurse(_ root: TreeNode?) -> Int {
         guard root != nil else { return 0 }
         
         
-        func bfsRecurse(_ root: TreeNode?) -> Int{
-            guard root != nil else { return 0 }
-            return min(bfsRecurse(root?.left), bfsRecurse(root?.right)) + 1
-        }
-        
-        var left = 0
-        if let node = root?.left {
-            left = bfsRecurse(node)
-        }
-        var right = 0
-        if let node = root?.right {
-            right = bfsRecurse(node)
-        }
-
-        if left != 0 && right != 0{
-            return min(left, right) + 1
+        if root?.left != nil && root?.right != nil {
+            return min(bfsMinDepthRecurse(root?.left), bfsMinDepthRecurse(root?.right)) + 1
+        }else if root?.left != nil {
+            return bfsMinDepthRecurse(root?.left) + 1
         }else{
-            return max(left, right) + 1
+            return bfsMinDepthRecurse(root?.right) + 1
         }
     }
     
@@ -130,28 +117,20 @@ class SolutionBinaryTreeDepth_Min {
         var minValue: Int = 0;
         var level: [TreeNode?] = [root]
         while !level.isEmpty {
-            
-            var isMin = false
             var count = level.count
+            minValue += 1
+            
             while count > 0 {
-                
                 let node = level.removeFirst()
                 //遇见叶节点，则停止
                 if node?.left == nil && node?.right == nil{
-                    isMin = true
-                    break
+                    return minValue
                 }else{
                     if node?.left != nil { level.append(node?.left) }
                     if node?.right != nil { level.append(node?.right) }
                 }
                 
                 count -= 1
-            }
-            
-            minValue += 1
-            
-            if isMin {
-                break
             }
         }
         
@@ -162,5 +141,8 @@ class SolutionBinaryTreeDepth_Min {
         
         //BFS，迭代方法
         return bfsMinDepth(root);
+        
+//        //DFS，递归方法
+//        return bfsMinDepthRecurse(root)
     }
 }
