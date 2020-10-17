@@ -19,6 +19,9 @@ class ViewController: UIViewController {
 //        let string = "abcdefcaefgh";
 //        let result = Solution_3().lengthOfLongestSubstring(string)
 //        print(result)
+        
+        
+        Codec().deserialize("[1,2,3,null,null,4,5]");
     }
 
 

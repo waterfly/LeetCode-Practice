@@ -20,26 +20,54 @@ public class TreeNode {
     }
 }
 
-
-class SolutionBinaryTreeBuild {
-    func buildTree(_ values: [Int?]) -> TreeNode? {
-        guard values.count > 0 else { return nil }
-        var root:TreeNode?
-        var nodes: [TreeNode?] = [];
-        for tmp in values {
-            var node: TreeNode? = nil
-            if let value = tmp {
-                node = TreeNode(value);
+//297，二叉树的序列化与反序列化
+class Codec {
+    func serialize(_ root: TreeNode?) -> String {
+        guard root != nil else{
+            return "";
+        }
+        
+        var result: [String] = Array();
+        var stack: [TreeNode?] = [root];
+        while !stack.isEmpty {
+            var length = stack.count;
+            while length > 0 {
+                
+                
+                if let node = stack.removeFirst()  {
+                    result.append(String(node.val));
+                    
+                    stack.append(node.left)
+                    stack.append(node.right)
+                }else{
+                    result.append("null")
+                }
+                
+                length -= 1
             }
-            nodes.append(node)
         }
         
-        let size = nodes.count
-        nodes.forEach { (node) in
-            
+        let data = try? JSONSerialization.data(withJSONObject: result, options: []);
+        if let tmp = data {
+            let jsonString = String(data: tmp, encoding: String.Encoding.utf8);
+            return jsonString!;
+        }else{
+            return "";
         }
         
+    }
+    
+    func deserialize(_ data: String) -> TreeNode? {
+        guard data.count > 0 else{
+            return nil
+        }
+        let dataString = data.data(using: String.Encoding.utf8)
+        let array: Array = try! JSONSerialization.jsonObject(with: dataString!, options: JSONSerialization.ReadingOptions.mutableContainers) as! Array<Any>
         
-        return root
+        for temp in array {
+            print(temp);
+        }
+        
+        return nil;
     }
 }

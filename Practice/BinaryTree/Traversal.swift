@@ -32,104 +32,104 @@ class SolutionTraversal {
         return result
     }
     
-    //94
+    //94，中序遍历
     func inorderTraversal(_ root: TreeNode?) -> [Int] {
         
-//        let closure_iterative_1 = { () -> [Int] in
-//            /*
-//             迭代算法 1 ，缺点，破坏了树结构，每次入栈，都要打断节点之间关联
-//             实现思路：
-//                依次入栈左节点，无左节点时，当前节点为最左节点 或 中节点，记录该节点值，同时出栈该节点，然后入栈右节点，这样栈就形成了 左 中 右结构
-//
-//             思考：对于遍历的方法，必须找到出栈条件（递归的方法则必须找到 递归结构）
-//
-//             缺点：当前方法会对树进行破坏，因为入栈到最左节点，需要出栈，但是左节点的判断还在，所以必须置空，破坏该无限循环条件。
-//             */
-//
-//            guard root != nil else {
-//                return []
-//            }
-//
-//            var result: [Int] = [Int]()
-//            var stack: [TreeNode] = [root!]
-//            while stack.count > 0 {
-//                let node = stack.first;
-//                let left = node!.left
-//                if left != nil {
-//                    //依次入栈左节点
-//                    node!.left = nil;           //必须置空，否则会无限循环
-//                    stack.insert(left!, at: 0)
-//                }else{
-//
-//                    //无左节点时，出栈当前节点，当前节点为左 或 中
-//                    result.append(node!.val)
-//                    stack.removeFirst()
-//
-//                    let right = node!.right
-//                    if right != nil {
-//                        //入栈右节点
-//                        node!.right = nil;      //必须置空，否则会无限循环
-//                        stack.insert(right!, at: 0)
-//                    }
-//                }
-//            }
-//
-//            return result
-//        }
-//        return closure_iterative_1();
+        let closure_iterative_1 = { () -> [Int] in
+            /*
+             迭代算法 1 ，缺点，破坏了树结构，每次入栈，都要打断节点之间关联
+             实现思路：
+                依次入栈左节点，无左节点时，当前节点为最左节点 或 中节点，记录该节点值，同时出栈该节点，然后入栈右节点，这样栈就形成了 左 中 右结构
+
+             思考：对于遍历的方法，必须找到出栈条件（递归的方法则必须找到 递归结构）
+
+             缺点：当前方法会对树进行破坏，因为入栈到最左节点，需要出栈，但是左节点的判断还在，所以必须置空，破坏该无限循环条件。
+             */
+
+            guard root != nil else {
+                return []
+            }
+
+            var result: [Int] = [Int]()
+            var stack: [TreeNode] = [root!]
+            while stack.count > 0 {
+                let node = stack.first;
+                let left = node!.left
+                if left != nil {
+                    //依次入栈左节点
+                    node!.left = nil;           //必须置空，否则会无限循环
+                    stack.insert(left!, at: 0)
+                }else{
+
+                    //无左节点时，出栈当前节点，当前节点为左 或 中
+                    result.append(node!.val)
+                    stack.removeFirst()
+
+                    let right = node!.right
+                    if right != nil {
+                        //入栈右节点
+                        node!.right = nil;      //必须置空，否则会无限循环
+                        stack.insert(right!, at: 0)
+                    }
+                }
+            }
+
+            return result
+        }
+        return closure_iterative_1();
         
         
         
         
-//        let closure_iterative_2 = { () -> [Int] in
-//            /*
-//             迭代算法 2 ，缺点，判断数组是否包含效率不高
-//             实现思路：
-//                依次入栈左节点，无左节点时，当前节点为最左节点 或 中节点，记录该节点值，同时出栈该节点，然后入栈右节点，这样栈就形成了 左 中 右结构
-//
-//             思考：对于遍历的方法，必须找到出栈条件（递归的方法则必须找到 递归结构）。
-//
-//             优化：针对第一版算法的缺点，增加了出栈缓存数组，出栈后的节点不再入栈，这样就不会破坏数的结构
-//
-//             缺点：每次判断数组是否包含，相当于一次遍历，效率不高
-//             */
-//
-//            guard root != nil else {
-//                return []
-//            }
-//
-//            var result: [Int] = [Int]()
-//            var stack: [TreeNode] = [root!]
-//            var save: [TreeNode] = Array();     //记录出栈的节点，出栈后的节点不再入栈
-//            while stack.count > 0 {
-//                let node = stack.first;
-//                let left = node!.left
-//                //已经出栈的节点，不再入栈
-//                if left != nil  && !save.contains(where: { (tmp) -> Bool in
-//                    return tmp === left!
-//                }) {
-//                    //依次入栈左节点
-//                    stack.insert(left!, at: 0)
-//                }else{
-//
-//                    //无左节点时，出栈当前节点，当前节点为左 或 中
-//                    result.append(node!.val)
-//                    stack.removeFirst()
-//                    save.append(node!)
-//
-//                    let right = node!.right
-//                    if right != nil && !save.contains(where: { (tmp) -> Bool in
-//                        return tmp === right!
-//                    }) {
-//                        //入栈右节点
-//                        stack.insert(right!, at: 0)
-//                    }
-//                }
-//            }
-//
-//            return result
-//        }
-//        return closure_iterative_2();
+        let closure_iterative_2 = { () -> [Int] in
+            /*
+             迭代算法 2 ，缺点，判断数组是否包含效率不高
+             实现思路：
+                依次入栈左节点，无左节点时，当前节点为最左节点 或 中节点，记录该节点值，同时出栈该节点，然后入栈右节点，这样栈就形成了 左 中 右结构
+
+             思考：对于遍历的方法，必须找到出栈条件（递归的方法则必须找到 递归结构）。
+
+             优化：针对第一版算法的缺点，增加了出栈缓存数组，出栈后的节点不再入栈，这样就不会破坏数的结构
+
+             缺点：每次判断数组是否包含，相当于一次遍历，效率不高
+             */
+
+            guard root != nil else {
+                return []
+            }
+
+            var result: [Int] = [Int]()
+            var stack: [TreeNode] = [root!]
+            var save: [TreeNode] = Array();     //记录出栈的节点，出栈后的节点不再入栈
+            while stack.count > 0 {
+                let node = stack.first;
+                let left = node!.left
+                //已经出栈的节点，不再入栈
+                if left != nil  && !save.contains(where: { (tmp) -> Bool in
+                    return tmp === left!
+                }) {
+                    //依次入栈左节点
+                    stack.insert(left!, at: 0)
+                }else{
+
+                    //无左节点时，出栈当前节点，当前节点为左 或 中
+                    result.append(node!.val)
+                    stack.removeFirst()
+                    save.append(node!)
+
+                    let right = node!.right
+                    if right != nil && !save.contains(where: { (tmp) -> Bool in
+                        return tmp === right!
+                    }) {
+                        //入栈右节点
+                        stack.insert(right!, at: 0)
+                    }
+                }
+            }
+
+            return result
+        }
+        return closure_iterative_2();
         
         
         let closure_iterative_3 = { () -> [Int] in
