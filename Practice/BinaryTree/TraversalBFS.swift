@@ -14,7 +14,19 @@ class SolutionTraversal {
     
     //宽度优先搜索（BFS），迭代实现
     
+    //前序遍历,Root、Left、Right
     //144，前序遍历，迭代实现
+    /*
+     核心是使用栈的思维来解决，前序遍历顺序为：root -> left -> fight
+     
+     
+     第一次压栈： [ root ]
+     第二次压栈： [ root.left , root.right ]
+     第三次压栈   [ root.left.left, root.left.right , root.right ]
+     ...
+     
+     即前序排列的第一个元素为root，所以总是把第一个元素出栈，然后依次把该元素的 right和left 入栈，形成 [ left, right ]
+     */
     func preorderTraversal(_ root: TreeNode?) -> [Int] {
         guard root != nil else {
             return []
@@ -31,6 +43,8 @@ class SolutionTraversal {
         
         return result
     }
+    
+    
     
     //94，中序遍历
     func inorderTraversal(_ root: TreeNode?) -> [Int] {
